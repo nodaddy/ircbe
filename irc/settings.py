@@ -27,7 +27,7 @@ AUTH_USER_MODEL = 'users.User'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['13.127.198.108', 'ec2-13-127-198-108.ap-south-1.compute.amazonaws.com', '127.0.0.1']
+ALLOWED_HOSTS = ['ircbe.iitr.ac.in', 'ec2-13-127-198-108.ap-south-1.compute.amazonaws.com', '127.0.0.1']
 
 # Application definition
 

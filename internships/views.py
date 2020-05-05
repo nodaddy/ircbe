@@ -9,6 +9,6 @@ from django.core import serializers
 class ListInternships(APIView):
     def get(self, request):
         jsonStuff = serializers.serialize("json", Internships.objects.all())
-        print(jsonStuff)
+        #print(jsonStuff)
         data={'jsonStuff':jsonStuff}
         return JsonResponse(data)

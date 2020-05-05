@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^changepwd/', ChangePassword.as_view()),
     url(r'^register/', RegisterView.as_view()),
     url(r'^getprofile/', GetProfileData.as_view()),
+    url(r'^apply/', ApplyToTheProject.as_view())
 ]
 

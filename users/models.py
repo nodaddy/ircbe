@@ -25,6 +25,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(_("phone number"), max_length=12)
     skype = models.CharField(_('skype name'), max_length=100)
     cv = models.CharField(_('cv'), max_length=100)
+    my_applications = models.CharField(_('my_Applications'), max_length=1000000, null=True)
+    my_bookmarks = models.CharField(_('my_Bookmarks'), max_length=1000000, null=True)
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     is_active = models.BooleanField(_('active'), default=True)
     is_staff = models.BooleanField(_('staff'), default=False)

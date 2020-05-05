@@ -23,19 +23,20 @@ class University(models.Model):
 
 class Internships(models.Model):
     def __unicode__(self):
-        return str(self.id) + " : " + self.name
+        return str(self.id) + " : " + self.title
 
     def __str__(self):
-        return str(self.id) + " : " + self.name
+        return str(self.id) + " : " + self.title
 
-    name = models.CharField(blank=False, max_length=50)
-    description = models.CharField(blank=False, max_length=1000)
-    deadline = models.DateTimeField(blank=False)
+    title = models.CharField(blank=False, max_length=500)
+    description = models.TextField(blank=False, max_length=100000)
+    deadline = models.DateField(blank=False)
     status = models.CharField(_("status"), max_length=2, choices=STATUS_CHOICES)
-    university = models.ForeignKey(University, related_name='internship_univ', on_delete=models.CASCADE)
+    university = models.CharField(blank=True, max_length=500)
+    comma_seperated_names_of_selected_students = models.CharField(blank=True, max_length=10000)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
-
-admin.site.register(University)
+                                
+admin.site.register(University) 
 admin.site.register(Internships)

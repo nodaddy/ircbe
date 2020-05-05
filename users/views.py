@@ -6,6 +6,18 @@ from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import *
 
+class ApplyToTheProject(APIView):
+    def post(self, request):
+       # request.user.my_applications=""
+       # request.user.save()
+        cs_list_app = request.user.my_applications
+        app_string = cs_list_app + request.data['title_of_project'] + "~"
+        request.user.my_applications = app_string
+        request.user.save()
+
+        return Response({})
+
+
 class GetProfileData(APIView):
     def get(self, request):
         content = {

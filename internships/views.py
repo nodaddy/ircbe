@@ -8,7 +8,7 @@ from django.core import serializers
 # Create your views here.
 class ListInternships(APIView):
     def get(self, request):
-        jsonStuff = serializers.serialize("json", Internships.objects.all())
+        jsonStuff = serializers.serialize("json", Internships.objects.filter(status='OP'))
         #print(jsonStuff)
         data={'jsonStuff':jsonStuff}
         return JsonResponse(data)

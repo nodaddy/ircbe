@@ -30,10 +30,16 @@ class Internships(models.Model):
 
     title = models.CharField(blank=False, max_length=500)
     description = models.TextField(blank=False, max_length=100000)
+    key_tasks = models.TextField(blank=True, max_length=100000)
+    critical_skills = models.TextField(blank=True, max_length=100000)
+    stipend = models.CharField(blank=True, max_length=500)
+    duration_in_months = models.CharField(blank=True, max_length=500)
+    eligibility = models.TextField(blank=True, max_length=500)
     deadline = models.DateField(blank=False)
     status = models.CharField(_("status"), max_length=2, choices=STATUS_CHOICES)
+    contact_email = models.CharField(blank=True, max_length=500)
     university = models.CharField(blank=True, max_length=500)
-    comma_seperated_names_of_selected_students = models.CharField(blank=True, max_length=10000)
+    space_seperated_emails_of_selected_students = models.CharField(blank=True, max_length=10000)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 

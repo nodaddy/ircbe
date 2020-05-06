@@ -119,6 +119,9 @@ REST_FRAMEWORK = {
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'

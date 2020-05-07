@@ -28,7 +28,7 @@ class Internships(models.Model):
     def __str__(self):
         return str(self.id) + " : " + self.title
 
-    title = models.CharField(blank=False, max_length=500)
+    title = models.CharField(blank=False, max_length=500, unique=True)
     description = models.TextField(blank=False, max_length=100000)
     key_tasks = models.TextField(blank=True, max_length=100000)
     critical_skills = models.TextField(blank=True, max_length=100000)
@@ -37,7 +37,7 @@ class Internships(models.Model):
     eligibility = models.TextField(blank=True, max_length=500)
     deadline = models.DateField(blank=False)
     status = models.CharField(_("status"), max_length=2, choices=STATUS_CHOICES)
-    contact_email = models.CharField(blank=True, max_length=500)
+    one_contact_email = models.EmailField(blank=False, max_length=500)
     university = models.CharField(blank=True, max_length=500)
     space_seperated_emails_of_selected_students = models.CharField(blank=True, max_length=10000)
     date_created = models.DateTimeField(auto_now_add=True)

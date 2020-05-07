@@ -11,6 +11,11 @@ urlpatterns = [
     url(r'^apply/', ApplyToTheProject.as_view()),
     url(r'^myapps/', MyApplications.as_view()),
     url(r'^myaccepted/', MyAccepted.as_view()),
+    url(r'^addbookmark/', AddBookmark.as_view()),
+    url(r'^removebookmark/', RemoveBookmark.as_view()),
+
+
+
 
 ]
 

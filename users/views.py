@@ -11,9 +11,46 @@ from django.core.mail import send_mail
 from django.core import mail
 from django.http import HttpResponse
 
+tilde = "%next%"
+
+class AddBookmark(APIView):
+    def post(self, request):
+        bookmark_list = request.user.my_bookmarks.split(tilde)
+        if request.data['pTitle'] not in bookmark_list:
+            request.user.my_bookmarks += request.data['pTitle'] + tilde
+            request.user.save()
+        return Response({})
+
+class RemoveBookmark(APIView):
+    def post(self, request):
+        arr = request.user.my_bookmarks.split(tilde)
+        request.user.my_bookmarks = "%next%"
+        for ptit in arr:
+            if ptit == "":
+                arr.remove(ptit)
+        
+        for x in range(len(arr)):
+            if request.data['pTitle'] == arr[x]:
+                arr.pop(x)
+                break
+                
+
+        if not arr:
+            request.user.my_bookmarks = "%next%"
+            request.user.save()
+        else:
+            for x in range(len(arr)):
+                request.user.my_bookmarks += arr[x] + tilde
+                request.user.save()
+        
+        
+        return Response({})
+
 
 class MyAccepted(APIView):
     def get(self, request):
+
+        request.user.my_accepted = tilde
 
         declared_projects = Internships.objects.filter(status='DC')
         for proje in declared_projects:
@@ -21,30 +58,31 @@ class MyAccepted(APIView):
             email_list = email_string.split(' ')
             for e_mail in email_list:
                 if request.user.email == e_mail:
-                    title_look_up_3 = request.user.my_accepted.split('~')
-                    proje_title = proje.title
-                    if proje_title not in title_look_up_3:
-                        request.user.my_accepted += proje.title + "~"
-        app_array = request.user.my_applications.split("~")
-        acc_array = request.user.my_accepted.split("~")
+                    #title_look_up_3 = request.user.my_accepted.split('~')
+                    #new variable proje_title
+                    #proje_title = proje.title
+                    #if proje_title not in title_look_up_3:
+                    request.user.my_accepted += proje.title + tilde
+        app_array = request.user.my_applications.split(tilde)
+        acc_array = request.user.my_accepted.split(tilde)
 
         for pro in acc_array:
             if pro in app_array:
                 app_array.remove(pro)
-                string_to_set_app = "~"
+                string_to_set_app = tilde
                 for pro in app_array:
                     if pro != "":
-                        string_to_set_app += pro + "~"
+                        string_to_set_app += pro + tilde
                         request.user.my_applications = string_to_set_app
                         request.user.save()
 
         str_to_ret = ""
-        title_look_up_2 = request.user.my_accepted.split('~')
+        title_look_up_2 = request.user.my_accepted.split(tilde)
         for tit in title_look_up_2:
             if tit != "":
                 proj = Internships.objects.filter(title=tit)
                 #print()
-                str_to_ret += proj.values('title')[0]['title'] + "*" + proj.values('university')[0]['university'] + "*" + str(proj.values('deadline')[0]['deadline']) + "~"
+                str_to_ret += proj.values('title')[0]['title'] + "*" + proj.values('university')[0]['university'] + "*" + str(proj.values('deadline')[0]['deadline']) + tilde
 
         return HttpResponse(str_to_ret)
 
@@ -52,12 +90,12 @@ class MyAccepted(APIView):
 class MyApplications(APIView):
     def get(self, request):
         str_to_ret = ""
-        title_look_up_0 = request.user.my_applications.split('~')
+        title_look_up_0 = request.user.my_applications.split(tilde)
         for tit in title_look_up_0:
             if tit != "":
                 proj = Internships.objects.filter(title=tit, status='OP')
-                #print()
-                str_to_ret += proj.values('title')[0]['title'] + "*" + proj.values('university')[0]['university'] + "*" + str(proj.values('deadline')[0]['deadline']) + "~"
+                if proj:
+                    str_to_ret += proj.values('title')[0]['title'] + "*" + proj.values('university')[0]['university'] + "*" + str(proj.values('deadline')[0]['deadline']) + tilde
 
         return HttpResponse(str_to_ret)
 
@@ -67,14 +105,18 @@ class ApplyToTheProject(APIView):
         # request.user.my_applications=""
         # request.user.save()
 
-        title_look_up_1 = request.user.my_applications.split('~')
+        title_look_up_1 = request.user.my_applications.split(tilde)
         project_title = request.data['pTitle']
         if project_title not in title_look_up_1:
             pemail = Internships.objects.filter(title=project_title)
-            stuff = pemail.values('contact_email')
+            stuff = pemail.values('one_contact_email')
             #print(stuff[0]['contact_email']) DO_NOT_EDIT
+            my_app_string = request.user.my_applications + request.data['pTitle'] + tilde
+            request.user.my_applications = my_app_string
 
-            internship_email = stuff[0]['contact_email']
+            request.user.save()
+
+            internship_email = stuff[0]['one_contact_email']
             proposal_text = request.data['proposal']
             student_name = request.user.name
             student_email = request.user.email
@@ -82,12 +124,12 @@ class ApplyToTheProject(APIView):
             student_resume = request.user.cv
 
             #SEND AN EMAIL
+            subject = request.data['pTitle'] + ' Student info. for application to project'
+            message = "APPLICANT'S NAME : " + student_name + " | MOBILE NO.: " + student_mobile + " | EMAIL ID: " + student_email + " | Link to student's resume: " + student_resume + " | Student's message: " + proposal_text
+            email_from = 'ircell@iitr.ac.in'
+            recipient_list = [internship_email]
+            send_mail(subject, message, email_from, recipient_list)
 
-
-            my_app_string = request.user.my_applications + request.data['pTitle'] + "~"
-            request.user.my_applications = my_app_string
-
-            request.user.save()
 
         else:
             print("user has already submitted for this project")

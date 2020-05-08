@@ -13,6 +13,14 @@ from django.http import HttpResponse
 
 tilde = "%next%"
 
+class UpdateProfile(APIView): 
+    def post(self, request):
+        request.user.cv = request.data['cv']
+        request.user.phone = request.data['phone']
+        request.user.skype = request.data['skype']
+        request.user.save()
+        return Response({})
+
 class AddBookmark(APIView):
     def post(self, request):
         bookmark_list = request.user.my_bookmarks.split(tilde)

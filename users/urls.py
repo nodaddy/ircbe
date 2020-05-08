@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^myaccepted/', MyAccepted.as_view()),
     url(r'^addbookmark/', AddBookmark.as_view()),
     url(r'^removebookmark/', RemoveBookmark.as_view()),
+    url(r'^updateprofile/', UpdateProfile.as_view()),
 
 
 

@@ -26,8 +26,11 @@ class ListBookmarks(APIView):
         listt = request.user.my_bookmarks.split(seperator)
         internships_list = []
         for tit in listt:
-            if tit!="" and tit!=" ":
+            try:
                 internship = Internships.objects.get(title=tit)
+            except Internships.DoesNotExist:
+                internship = None
+            if tit!="" and tit!=" " and internship!=None:
                 internships_list.append(internship)
         jsonStuff = serializers.serialize("json", internships_list)
         #print(jsonStuff)

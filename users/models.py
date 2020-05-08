@@ -17,14 +17,14 @@ DEPT_CHOICES = [
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    name = models.CharField(_('first name'), max_length=100)
-    dept = models.CharField(_("department"), max_length=20)
+    name = models.CharField(_('first name'), max_length=100, null=False)
+    dept = models.CharField(_("department"), max_length=20, null=False)
     enrl_no = models.IntegerField(_("enrollment no"), null=True)
     year = models.IntegerField(_("year"), null=True)
-    email = models.EmailField(_('email address'), unique=True)
-    phone = models.CharField(_("phone number"), max_length=12)
-    skype = models.CharField(_('skype name'), max_length=100)
-    cv = models.CharField(_('cv'), max_length=100)
+    email = models.EmailField(_('email address'), unique=True, null=False)
+    phone = models.CharField(_("phone number"), max_length=12, null=False)
+    skype = models.CharField(_('skype name'), max_length=100, null=True, default="Not availabe", blank=True)
+    cv = models.CharField(_('cv'), max_length=100, null=True)
     my_applications = models.CharField(_('my_Applications'), default="%next%", max_length=100000, null=True)
     my_accepted = models.CharField(_('my_Accepted'), default="%next%", max_length=100000, null=True)
     my_bookmarks = models.CharField(_('my_Bookmarks'), max_length=100000, default="%next%", null=True)

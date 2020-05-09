@@ -28,7 +28,7 @@ class Internships(models.Model):
     def __str__(self):
         return str(self.id) + " : " + self.title
 
-    title = models.CharField(blank=False, max_length=500, unique=True)
+    title = models.CharField(_('Title of the Internship __(will be treated as new internship if you edit again)'),blank=False, max_length=500, unique=True)
     description = models.TextField(blank=False, max_length=100000)
     key_tasks = models.TextField(blank=True, max_length=100000)
     critical_skills = models.TextField(blank=True, max_length=100000)

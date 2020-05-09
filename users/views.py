@@ -12,6 +12,8 @@ from django.core import mail
 from django.http import HttpResponse
 
 tilde = "%next%"
+sep = "%parting_string%"
+
 
 class UpdateProfile(APIView): 
     def post(self, request):
@@ -89,8 +91,7 @@ class MyAccepted(APIView):
         for tit in title_look_up_2:
             if tit != "":
                 proj = Internships.objects.filter(title=tit)
-                #print()
-                str_to_ret += proj.values('title')[0]['title'] + "*" + proj.values('university')[0]['university'] + "*" + str(proj.values('deadline')[0]['deadline']) + tilde
+                str_to_ret += proj.values('title')[0]['title'] + sep + proj.values('university')[0]['university'] + sep + str(proj.values('deadline')[0]['deadline']) + tilde
 
         return HttpResponse(str_to_ret)
 
@@ -103,7 +104,7 @@ class MyApplications(APIView):
             if tit != "":
                 proj = Internships.objects.filter(title=tit, status='OP')
                 if proj:
-                    str_to_ret += proj.values('title')[0]['title'] + "*" + proj.values('university')[0]['university'] + "*" + str(proj.values('deadline')[0]['deadline']) + tilde
+                    str_to_ret += proj.values('title')[0]['title'] + sep + proj.values('university')[0]['university'] + sep + str(proj.values('deadline')[0]['deadline']) + tilde
 
         return HttpResponse(str_to_ret)
 
